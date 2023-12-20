@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import banner from "../../assets/task-management-hero-banner.png";
 
 const Banner = () => {
@@ -13,7 +14,9 @@ const Banner = () => {
               excepturi exercitationem quasi. In deleniti eaque aut repudiandae
               et a id nisi.
             </p>
-            <button className="btn btn-primary">Get Started</button>
+            <Link to="/login">
+              <button className="btn btn-warning">Let’s Explore</button>
+            </Link>
           </div>
         </div>
       </div>
