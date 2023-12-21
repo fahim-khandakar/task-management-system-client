@@ -39,7 +39,7 @@ const Registration = () => {
           photoURL: photo,
         })
           .then(() => {
-            navigate(location?.state ? location.state : "/");
+            navigate(location?.state ? location.state : "/dashboard");
           })
           .catch();
         swal("Success!", "Successfully Account Created", "success");
@@ -53,7 +53,7 @@ const Registration = () => {
   const handleLoginWithGoogle = () => {
     signInWithGoogle()
       .then(() => {
-        navigate(location?.state ? location.state : "/");
+        navigate(location?.state ? location.state : "/dashboard");
         swal("Success!", "Successfully Account Created", "success");
       })
       .catch((error) => {

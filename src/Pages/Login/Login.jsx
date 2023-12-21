@@ -17,7 +17,7 @@ const Login = () => {
     const password = form.get("password");
     signIn(email, password)
       .then(() => {
-        navigate(location?.state ? location.state : "/");
+        navigate(location?.state ? location.state : "/dashboard");
         swal("Success!", "You Are Successfully Login", "success");
       })
       .catch((error) => {
@@ -27,7 +27,7 @@ const Login = () => {
   const handleLoginWithGoogle = () => {
     signInWithGoogle()
       .then(() => {
-        navigate(location?.state ? location.state : "/");
+        navigate(location?.state ? location.state : "/dashboard");
         swal("Success!", "You Are Successfully Login", "success");
       })
       .catch((error) => {

@@ -24,31 +24,9 @@ const Navbar = () => {
       <li>
         <NavLink to="/services">Services</NavLink>
       </li>
-
-      {
-        <details className="dropdown">
-          <summary
-            style={{
-              cursor: "pointer",
-              outline: "none",
-              listStyleType: "none",
-            }}
-          >
-            Dashboard
-          </summary>
-          <ul className=" menu-sm dropdown-content text-left text-[#482551] mt-1 z-[1] p-2 shadow bg-base-200 rounded-box w-52">
-            <li>
-              <NavLink to="myServices">My Services</NavLink>
-            </li>
-            <li>
-              <NavLink to="addServices">Add Services</NavLink>
-            </li>
-            <li>
-              <NavLink to="mySchedules">My Schedules</NavLink>
-            </li>
-          </ul>
-        </details>
-      }
+      <li>
+        <NavLink to="/dashboard/taskManagement">Dashboard</NavLink>
+      </li>
     </>
   );
   return (
