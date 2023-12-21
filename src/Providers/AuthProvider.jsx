@@ -7,9 +7,9 @@ import {
   signInWithPopup,
   signOut,
 } from "firebase/auth";
-import auth from "../firebase/firebase.config";
 import { createContext, useEffect, useState } from "react";
-import axios from "axios";
+import auth from "../firebase/firebase.config";
+// import axios from "axios";
 
 export const AuthContext = createContext(null);
 const provider = new GoogleAuthProvider();
@@ -43,24 +43,24 @@ const AuthProviders = ({ children }) => {
 
   useEffect(() => {
     const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
-      const loggedEmail = currentUser?.email || user?.email;
-      const loggedUser = { email: loggedEmail };
+      // const loggedEmail = currentUser?.email || user?.email;
+      // const loggedUser = { email: loggedEmail };
 
       setUser(currentUser);
       setLoading(false);
-      if (currentUser) {
-        axios
-          .post("https://adventures-hub-server.vercel.app/jwt", loggedUser, {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-      } else {
-        axios
-          .post("https://adventures-hub-server.vercel.app/logout", loggedUser, {
-            withCredentials: true,
-          })
-          .then((res) => res.data);
-      }
+      // if (currentUser) {
+      //   axios
+      //     .post("https://adventures-hub-server.vercel.app/jwt", loggedUser, {
+      //       withCredentials: true,
+      //     })
+      //     .then((res) => res.data);
+      // } else {
+      //   axios
+      //     .post("https://adventures-hub-server.vercel.app/logout", loggedUser, {
+      //       withCredentials: true,
+      //     })
+      //     .then((res) => res.data);
+      // }
     });
     return () => {
       unSubscribe();

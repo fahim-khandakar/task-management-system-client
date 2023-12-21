@@ -1,6 +1,21 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../Providers/AuthProvider";
+import { useContext } from "react";
+import swal from "sweetalert";
+import Profile from "./Profile/Profile";
 
 const Navbar = () => {
+  const { logOut, user } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const signOut = () => {
+    logOut()
+      .then(() => {
+        navigate("/");
+        swal("Successfully!", "You Are Log Out", "success");
+      })
+      .catch(() => swal("Opps!", "Something went wrong", "error"));
+  };
+
   const navLinks = (
     <>
       <li>
@@ -72,7 +87,7 @@ const Navbar = () => {
           <ul className="gap-10 menu-horizontal px-1">{navLinks}</ul>
         </div>
         <div className="navbar-end gap-2 md:gap-5">
-          {/* {user ? (
+          {user ? (
             <details>
               <summary
                 style={{
@@ -93,7 +108,7 @@ const Navbar = () => {
             <li className="list-none md:btn md:btn-ghost text-[#482551]  text-xs md:text-base">
               <NavLink to="/login">Login</NavLink>
             </li>
-          )} */}
+          )}
         </div>
       </div>
     </div>
