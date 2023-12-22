@@ -1,13 +1,77 @@
+/* eslint-disable react/prop-types */
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import userAxiosPublic from "../../Hooks/useAxiosPublic";
 import { useForm } from "react-hook-form";
 import swal from "sweetalert";
 import { RxCross1 } from "react-icons/rx";
-import OngoingAllTask from "../../Hooks/OngoingAllTask";
+import { useDrag, useDrop } from "react-dnd"; // Import the useDrag hook
 import AllTask from "../../Hooks/AllTask";
 import CompletedAllTask from "../../Hooks/CompletedAllTask";
 import noData from "../../assets/no-data.jpg";
+import OngoingAllTask from "../../Hooks/OngoingAllTask";
+
+const Task = ({ task, openModal, handleDelete }) => {
+  const [collected, drag, dragPreview] = useDrag({
+    type: "TASK",
+    item: {
+      id: task._id,
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+    },
+  });
+
+  return collected.isDragging ? (
+    <tr ref={dragPreview} className="hover">
+      <th>{task.index}</th>
+      <td>{task.title}</td>
+      <td>{task.description}</td>
+      <td>{task.user}</td>
+      <td>{task.priority}</td>
+      <td>
+        <button
+          onClick={() => openModal(task)}
+          className="btn btn-sm btn-warning"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          onClick={() => handleDelete(task._id)}
+          className="btn btn-sm btn-warning"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  ) : (
+    <tr ref={drag} {...collected} className="hover">
+      <th>{task.index}</th>
+      <td>{task.title}</td>
+      <td>{task.description}</td>
+      <td>{task.user}</td>
+      <td>{task.priority}</td>
+      <td>
+        <button
+          onClick={() => openModal(task)}
+          className="btn btn-sm btn-warning"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          onClick={() => handleDelete(task._id)}
+          className="btn btn-sm btn-warning"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+};
 
 const Ongoing = () => {
   const { user } = useContext(AuthContext);
@@ -18,6 +82,32 @@ const Ongoing = () => {
 
   const [selectedTask, setSelectedTask] = useState(null);
 
+  const [, drop] = useDrop({
+    accept: "TASK",
+    drop: (item, monitor) => {
+      // Handle the drop action based on the monitor.getItem() data
+      // For example, you can move the task to the "To-Do" list:
+      console.log("Task dropped to To-Do:", item, monitor);
+      const res = axiosPublic.put(`/todoToOngoing/${item.id}`, {
+        ...item,
+        user: user.email,
+      });
+
+      res
+        .then((res) => {
+          swal("Success!", "Task successfully updated", "success");
+          console.log(res.data);
+          ongoingRefetch();
+          allTaskRefetch();
+          completedRefetch();
+        })
+        .catch((err) => {
+          swal("Error!", `${err.message}`, "error");
+          console.log(err);
+        });
+    },
+  });
+
   const openModal = (task) => {
     setSelectedTask(task);
     if (modalRef.current) {
@@ -27,6 +117,12 @@ const Ongoing = () => {
 
   const { register, handleSubmit, setValue } = useForm();
   const modalRef = useRef(null);
+
+  const closeModal = () => {
+    if (modalRef.current) {
+      modalRef.current.close();
+    }
+  };
 
   useEffect(() => {
     // Ensure modalRef is initialized properly
@@ -83,19 +179,13 @@ const Ongoing = () => {
       })
       .catch((err) => {
         swal("Error", `${err.message}`, "error");
-
         console.log(err.message);
       });
   };
 
-  const closeModal = () => {
-    if (modalRef.current) {
-      modalRef.current.close();
-    }
-  };
   return (
     <div>
-      <div className="overflow-x-auto">
+      <div ref={drop} className="overflow-x-auto mb-10 md:mb-28">
         {ongoings?.length > 0 ? (
           <table className="table">
             {/* head */}
@@ -111,31 +201,14 @@ const Ongoing = () => {
               </tr>
             </thead>
             <tbody>
-              {/* row 1 */}
+              {/* Render Task components */}
               {ongoings?.map((task, index) => (
-                <tr key={index} className="hover">
-                  <th>{index + 1}</th>
-                  <td>{task.title}</td>
-                  <td>{task.description}</td>
-                  <td>{task.user}</td>
-                  <td>{task.priority}</td>
-                  <td>
-                    <button
-                      onClick={() => openModal(task)}
-                      className="btn btn-sm btn-warning"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(task._id)}
-                      className="btn btn-sm btn-warning"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+                <Task
+                  key={task._id}
+                  task={{ ...task, index: index + 1 }}
+                  openModal={openModal}
+                  handleDelete={handleDelete}
+                />
               ))}
             </tbody>
           </table>

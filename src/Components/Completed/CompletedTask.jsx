@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../Providers/AuthProvider";
 import userAxiosPublic from "../../Hooks/useAxiosPublic";
@@ -8,13 +9,76 @@ import CompletedAllTask from "../../Hooks/CompletedAllTask";
 import AllTask from "../../Hooks/AllTask";
 import OngoingAllTask from "../../Hooks/OngoingAllTask";
 import noData from "../../assets/no-data.jpg";
+import { useDrag, useDrop } from "react-dnd";
+
+const Task = ({ task, openModal, handleDelete }) => {
+  const [collected, drag, dragPreview] = useDrag({
+    type: "TASK",
+    item: {
+      id: task._id,
+      title: task.title,
+      description: task.description,
+      priority: task.priority,
+    },
+  });
+
+  return collected.isDragging ? (
+    <tr ref={dragPreview} className="hover">
+      <th>{task.index}</th>
+      <td>{task.title}</td>
+      <td>{task.description}</td>
+      <td>{task.user}</td>
+      <td>{task.priority}</td>
+      <td>
+        <button
+          onClick={() => openModal(task)}
+          className="btn btn-sm btn-warning"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          onClick={() => handleDelete(task._id)}
+          className="btn btn-sm btn-warning"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  ) : (
+    <tr ref={drag} {...collected} className="hover">
+      <th>{task.index}</th>
+      <td>{task.title}</td>
+      <td>{task.description}</td>
+      <td>{task.user}</td>
+      <td>{task.priority}</td>
+      <td>
+        <button
+          onClick={() => openModal(task)}
+          className="btn btn-sm btn-warning"
+        >
+          Edit
+        </button>
+      </td>
+      <td>
+        <button
+          onClick={() => handleDelete(task._id)}
+          className="btn btn-sm btn-warning"
+        >
+          Delete
+        </button>
+      </td>
+    </tr>
+  );
+};
 
 const CompletedTask = () => {
   const { user } = useContext(AuthContext);
   const { ongoingRefetch } = OngoingAllTask();
   const { allTaskRefetch } = AllTask();
   const axiosPublic = userAxiosPublic();
-  const { completedRefetch, completedTask } = CompletedAllTask();
+  const { completedRefetch, completedAll } = CompletedAllTask();
 
   const [selectedTask, setSelectedTask] = useState(null);
 
@@ -45,6 +109,32 @@ const CompletedTask = () => {
       setValue("priority", selectedTask.priority);
     }
   }, [selectedTask, setValue]);
+
+  const [, drop] = useDrop({
+    accept: "TASK",
+    drop: (item, monitor) => {
+      // Handle the drop action based on the monitor.getItem() data
+      // For example, you can move the task to the "To-Do" list:
+      console.log("Task dropped to To-Do:", item, monitor);
+      const res = axiosPublic.put(`/todoToCompleted/${item.id}`, {
+        ...item,
+        user: user.email,
+      });
+
+      res
+        .then((res) => {
+          swal("Success!", "Task successfully updated", "success");
+          console.log(res.data);
+          ongoingRefetch();
+          allTaskRefetch();
+          completedRefetch();
+        })
+        .catch((err) => {
+          swal("Error!", `${err.message}`, "error");
+          console.log(err);
+        });
+    },
+  });
 
   const onSubmit = (data) => {
     if (modalRef.current) {
@@ -95,8 +185,8 @@ const CompletedTask = () => {
   };
   return (
     <div>
-      <div className="overflow-x-auto">
-        {CompletedAllTask?.length > 0 ? (
+      <div ref={drop} className="overflow-x-auto mb-10 md:mb-28">
+        {completedAll?.length > 0 ? (
           <table className="table">
             {/* head */}
             <thead>
@@ -112,30 +202,13 @@ const CompletedTask = () => {
             </thead>
             <tbody>
               {/* row 1 */}
-              {completedTask?.map((task, index) => (
-                <tr key={index} className="hover">
-                  <th>{index + 1}</th>
-                  <td>{task.title}</td>
-                  <td>{task.description}</td>
-                  <td>{task.user}</td>
-                  <td>{task.priority}</td>
-                  <td>
-                    <button
-                      onClick={() => openModal(task)}
-                      className="btn btn-sm btn-warning"
-                    >
-                      Edit
-                    </button>
-                  </td>
-                  <td>
-                    <button
-                      onClick={() => handleDelete(task._id)}
-                      className="btn btn-sm btn-warning"
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
+              {completedAll?.map((task, index) => (
+                <Task
+                  key={task._id}
+                  task={{ ...task, index: index + 1 }}
+                  openModal={openModal}
+                  handleDelete={handleDelete}
+                />
               ))}
             </tbody>
           </table>

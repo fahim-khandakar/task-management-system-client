@@ -3,6 +3,7 @@ import { AuthContext } from "../Providers/AuthProvider";
 import { useContext } from "react";
 import swal from "sweetalert";
 import Profile from "./Profile/Profile";
+import logo from "../assets/logo2.png";
 
 const Navbar = () => {
   const { logOut, user } = useContext(AuthContext);
@@ -58,7 +59,7 @@ const Navbar = () => {
             </ul>
           </div>
           <div className="w-3/4 md:w-1/2">
-            <h1>Task Management System</h1>
+            <img src={logo} alt="" />
           </div>
         </div>
         <div className="navbar-center hidden lg:flex">

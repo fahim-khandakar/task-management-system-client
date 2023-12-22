@@ -21,7 +21,7 @@ const CreateTask = () => {
     setValue("description", "");
     setValue("deadline", "");
     setValue("priority", "Low");
-    setValue("status", "ongoing");
+    setValue("status", "todo");
   }, [setValue]);
 
   const onSubmit = (data) => {

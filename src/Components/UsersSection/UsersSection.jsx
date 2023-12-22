@@ -11,14 +11,13 @@ const UsersSection = () => {
             How to get benefits from using this website
           </h1>
           <p className="mt-5">
-            Welcome to [Your Task Management Website Name], where productivity
-            meets simplicity. Our innovative task management platform is
-            meticulously crafted to elevate your efficiency and transform the
-            way you approach your daily tasks. With intuitive features,
-            collaborative workspaces, and powerful analytics, our platform
-            empowers individuals and teams to effortlessly organize, prioritize,
-            and conquer their to-do lists. Experience the next level of
-            productivity with [Your Task Management Website Name] – where
+            Welcome to Task Buddy, where productivity meets simplicity. Our
+            innovative task management platform is meticulously crafted to
+            elevate your efficiency and transform the way you approach your
+            daily tasks. With intuitive features, collaborative workspaces, and
+            powerful analytics, our platform empowers individuals and teams to
+            effortlessly organize, prioritize, and conquer their to-do lists.
+            Experience the next level of productivity with Task Buddy. where
             managing tasks becomes a seamless and enjoyable part of your daily
             routine.
           </p>
