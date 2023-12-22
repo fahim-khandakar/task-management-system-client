@@ -204,7 +204,7 @@ const CompletedTask = () => {
               {/* row 1 */}
               {completedAll?.map((task, index) => (
                 <Task
-                  key={task._id}
+                  key={task?._id}
                   task={{ ...task, index: index + 1 }}
                   openModal={openModal}
                   handleDelete={handleDelete}

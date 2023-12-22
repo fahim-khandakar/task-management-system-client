@@ -39,7 +39,9 @@ const Registration = () => {
           photoURL: photo,
         })
           .then(() => {
-            navigate(location?.state ? location.state : "/dashboard");
+            navigate(
+              location?.state ? location.state : "/dashboard/taskManagement"
+            );
           })
           .catch();
         swal("Success!", "Successfully Account Created", "success");
@@ -53,7 +55,9 @@ const Registration = () => {
   const handleLoginWithGoogle = () => {
     signInWithGoogle()
       .then(() => {
-        navigate(location?.state ? location.state : "/dashboard");
+        navigate(
+          location?.state ? location.state : "/dashboard/taskManagement"
+        );
         swal("Success!", "Successfully Account Created", "success");
       })
       .catch((error) => {

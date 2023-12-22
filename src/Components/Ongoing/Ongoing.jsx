@@ -204,7 +204,7 @@ const Ongoing = () => {
               {/* Render Task components */}
               {ongoings?.map((task, index) => (
                 <Task
-                  key={task._id}
+                  key={task?._id}
                   task={{ ...task, index: index + 1 }}
                   openModal={openModal}
                   handleDelete={handleDelete}

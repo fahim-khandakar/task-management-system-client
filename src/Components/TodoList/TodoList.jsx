@@ -204,7 +204,7 @@ const TodoList = () => {
               {/* Render Task components */}
               {tasks?.map((task, index) => (
                 <Task
-                  key={index}
+                  key={task?._id}
                   task={{ ...task, index: index + 1 }}
                   openModal={openModal}
                   handleDelete={handleDelete}
