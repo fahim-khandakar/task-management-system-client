@@ -37,6 +37,11 @@ const CreateTask = () => {
         console.log(res.data);
         allTaskRefetch();
         ongoingRefetch();
+        setValue("title", "");
+        setValue("description", "");
+        setValue("deadline", "");
+        setValue("priority", "Low");
+        setValue("status", "todo");
       })
       .catch((err) => {
         swal("Error!", `${err.message}`, "error");
@@ -74,55 +79,63 @@ const CreateTask = () => {
             <h1 className="text-center font-bold text-xl">Add A Task</h1>
 
             <form
-              className="flex flex-col gap-2 w-full mt-5 mx-auto"
+              className="flex flex-col gap-4 w-full max-w-lg mt-8 mx-auto  p-6 "
               method="dialog"
               onSubmit={handleSubmit(onSubmit)}
             >
-              <label>
-                Title:
-                <input
-                  required
-                  placeholder="Title"
-                  className="input input-bordered w-full max-w-xs ml-5"
-                  {...register("title")}
-                />
-              </label>
+              <div className="flex flex-col gap-2">
+                <label className="font-semibold">
+                  Title:
+                  <input
+                    required
+                    placeholder="Title"
+                    className="input input-bordered w-full mt-1"
+                    {...register("title")}
+                  />
+                </label>
+              </div>
 
-              <label className="grid grid-cols-[auto,1fr] gap-2 items-center">
-                <span>Description:</span>
-                <textarea
-                  required
-                  placeholder="Description"
-                  className="input input-bordered py-[10px] w-full max-w-xs"
-                  {...register("description")}
-                />
-              </label>
+              <div className="flex flex-col gap-2">
+                <label className="font-semibold">
+                  Description:
+                  <textarea
+                    required
+                    placeholder="Description"
+                    className="input input-bordered w-full mt-1 h-24"
+                    {...register("description")}
+                  />
+                </label>
+              </div>
 
-              <label>
-                Deadline:
-                <input
-                  required
-                  placeholder="Deadline"
-                  className="input input-bordered w-full max-w-xs ml-5"
-                  type="date"
-                  {...register("deadline")}
-                />
-              </label>
+              <div className="flex flex-col gap-2">
+                <label className="font-semibold">
+                  Deadline:
+                  <input
+                    required
+                    placeholder="Deadline"
+                    className="input input-bordered w-full mt-1"
+                    type="date"
+                    {...register("deadline")}
+                  />
+                </label>
+              </div>
 
-              <label>
-                Priority:
-                <select
-                  required
-                  className="input input-bordered w-full max-w-xs ml-5"
-                  {...register("priority")}
-                >
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
-              </label>
+              <div className="flex flex-col gap-2">
+                <label className="font-semibold">
+                  Priority:
+                  <select
+                    required
+                    className="input input-bordered w-full mt-1"
+                    {...register("priority")}
+                  >
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                  </select>
+                </label>
+              </div>
 
-              <button className="btn btn-warning mt-5" type="submit">
+              <button className="btn btn-warning mt-4" type="submit">
                 Submit
               </button>
             </form>

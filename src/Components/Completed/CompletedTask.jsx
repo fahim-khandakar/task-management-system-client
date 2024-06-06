@@ -184,7 +184,7 @@ const CompletedTask = () => {
     }
   };
   return (
-    <div>
+    <div className="border-2 border-dotted">
       <div ref={drop} className="overflow-x-auto mb-10 md:mb-28">
         {completedAll?.length > 0 ? (
           <table className="table">
