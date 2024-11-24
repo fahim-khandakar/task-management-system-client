@@ -3,7 +3,7 @@ import banner from "../../assets/task-management-hero-banner.png";
 
 const Banner = () => {
   return (
-    <div className="mx-auto max-w-6xl px-5 md:px-0">
+    <div className="mx-auto  px-5 md:px-0">
       <div className="hero min-h-screen ">
         <div className="hero-content flex-col lg:flex-row-reverse">
           <img src={banner} className="max-w-sm rounded-lg shadow-2xl" />

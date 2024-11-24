@@ -31,8 +31,8 @@ const Navbar = () => {
     </>
   );
   return (
-    <div className="shadow-md w-full ">
-      <div className="navbar font-serif text-[#482551] mx-auto max-w-6xl px-5 md:px-0 ">
+    <div className="shadow-md w-full px-10">
+      <div className="navbar font-serif text-[#482551] mx-auto px-10 md:px-0 ">
         <div className="navbar-start">
           <div className="dropdown">
             <label tabIndex={0} className=" lg:hidden">
@@ -58,7 +58,7 @@ const Navbar = () => {
               {navLinks}
             </ul>
           </div>
-          <div className="w-3/4 md:w-1/2">
+          <div className="w-3/4 md:w-1/3">
             <img src={logo} alt="" />
           </div>
         </div>

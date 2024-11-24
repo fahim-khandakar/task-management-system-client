@@ -36,7 +36,7 @@ const TaskManagement = () => {
       `Today's tasks:\n${todayTasks
         .map((task, index) => `${index + 1}. ${task.title}\n`)
         .join("")}`,
-      "success"
+      "warning"
     );
   }
 
@@ -45,21 +45,20 @@ const TaskManagement = () => {
       <DndProvider backend={HTML5Backend}>
         <div className="flex justify-end -mt-6">
           <div className="flex justify-end w-1/2">
-            <CreateTask></CreateTask>
+            <CreateTask />
           </div>
         </div>
-        <h1 className="text-center font-bold text-2xl md:text-4xl my-5">
-          --- Todo List ---
-        </h1>
-        <TodoList></TodoList>
-        <h1 className="text-center text-2xl md:text-4xl font-bold my-5">
-          --- Ongoing ---
-        </h1>
-        <Ongoing></Ongoing>
-        <h1 className="text-center text-2xl md:text-4xl font-bold my-5">
-          --- Completed ---
-        </h1>
-        <CompletedTask></CompletedTask>
+        <div className="grid grid-cols-3 gap-5 mt-10">
+          <div>
+            <TodoList />
+          </div>
+          <div>
+            <Ongoing />
+          </div>
+          <div>
+            <CompletedTask />
+          </div>
+        </div>
       </DndProvider>
     </div>
   );

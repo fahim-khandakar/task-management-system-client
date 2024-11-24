@@ -5,9 +5,13 @@ import Footer from "../Components/Footer/Footer";
 const RootRoutes = () => {
   return (
     <div>
-      <Navbar></Navbar>
-      <Outlet></Outlet>
-      <Footer></Footer>
+      <Navbar />
+      <div className="min-h-[calc(100vh-156px)] px-20">
+        <Outlet />
+      </div>
+      <div className="px-20">
+        <Footer />
+      </div>
     </div>
   );
 };

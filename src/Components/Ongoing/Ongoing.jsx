@@ -10,8 +10,10 @@ import AllTask from "../../Hooks/AllTask";
 import CompletedAllTask from "../../Hooks/CompletedAllTask";
 import noData from "../../assets/no-data.jpg";
 import OngoingAllTask from "../../Hooks/OngoingAllTask";
+import { icons } from "../../Shared/Icons/Icons";
+import DetailsTask from "../Details Modal For Task/DetailsTask";
 
-const Task = ({ task, openModal, handleDelete }) => {
+const Task = ({ task, openModal, handleDelete, handleDetailsModal }) => {
   const [collected, drag, dragPreview] = useDrag({
     type: "TASK",
     item: {
@@ -26,47 +28,64 @@ const Task = ({ task, openModal, handleDelete }) => {
     <tr ref={dragPreview} className="hover">
       <th>{task.index}</th>
       <td>{task.title}</td>
-      <td>{task.description}</td>
-      <td>{task.user}</td>
-      <td>{task.priority}</td>
+      <td>{task.description?.slice(0, 10)}</td>
+      <td
+        className={`px-2 py-1 rounded-full text-white ${
+          task.priority === "High"
+            ? "bg-red-500"
+            : task.priority === "Medium"
+            ? "bg-yellow-500"
+            : "bg-green-500"
+        }`}
+      >
+        {task.priority}
+      </td>
       <td>
         <button
           onClick={() => openModal(task)}
-          className="btn btn-sm btn-warning"
+          className="btn btn-xs btn-warning"
         >
-          Edit
+          {icons?.edit}
         </button>
       </td>
       <td>
         <button
           onClick={() => handleDelete(task._id)}
-          className="btn btn-sm btn-warning"
+          className="btn btn-xs btn-warning"
         >
-          Delete
+          {icons?.delete}
         </button>
       </td>
     </tr>
   ) : (
-    <tr ref={drag} {...collected} className="hover">
+    <tr ref={drag} {...collected} className="hover cursor-pointer">
       <th>{task.index}</th>
-      <td>{task.title}</td>
-      <td>{task.description}</td>
-      <td>{task.user}</td>
-      <td>{task.priority}</td>
+      <td onClick={() => handleDetailsModal(task)}>{task.title}</td>
+      <td>{task.description?.slice(0, 10)}</td>
       <td>
-        <button
-          onClick={() => openModal(task)}
-          className="btn btn-sm btn-warning"
+        <span
+          className={`py-1 px-2 rounded-full text-white ${
+            task.priority === "High"
+              ? "bg-red-500"
+              : task.priority === "Medium"
+              ? "bg-yellow-500"
+              : "bg-green-500"
+          }`}
         >
-          Edit
+          {task.priority}
+        </span>
+      </td>
+      <td>
+        <button onClick={() => openModal(task)} className="btn btn-xs">
+          {icons?.edit}
         </button>
       </td>
       <td>
         <button
           onClick={() => handleDelete(task._id)}
-          className="btn btn-sm btn-warning"
+          className="btn btn-xs text-red-500 text-lg"
         >
-          Delete
+          {icons?.delete}
         </button>
       </td>
     </tr>
@@ -81,6 +100,7 @@ const Ongoing = () => {
   const { ongoings, ongoingRefetch } = OngoingAllTask();
 
   const [selectedTask, setSelectedTask] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
 
   const [, drop] = useDrop({
     accept: "TASK",
@@ -113,6 +133,11 @@ const Ongoing = () => {
     if (modalRef.current) {
       modalRef.current.show();
     }
+  };
+
+  const handleDetailsModal = (task) => {
+    setIsOpen(true);
+    setSelectedTask(task);
   };
 
   const { register, handleSubmit, setValue } = useForm();
@@ -184,23 +209,26 @@ const Ongoing = () => {
   };
 
   return (
-    <div className="border-2 border-dotted">
-      <div ref={drop} className="overflow-x-auto mb-10 md:mb-28">
+    <div className="bg-white shadow-lg">
+      <h1 className="text-center font-bold text-2xl md:text-4xl py-5 border-b">
+        In Progress
+      </h1>
+
+      <div ref={drop} className="overflow-x-auto h-[calc(100vh-380px)]">
         {ongoings?.length > 0 ? (
-          <table className="table">
+          <table className="table text-center">
             {/* head */}
             <thead>
               <tr>
                 <th>#</th>
                 <th>Title</th>
                 <th>Description</th>
-                <th>Email</th>
                 <th>Priority</th>
                 <th>Action</th>
                 <th>Action</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="text-xs">
               {/* Render Task components */}
               {ongoings?.map((task, index) => (
                 <Task
@@ -208,6 +236,7 @@ const Ongoing = () => {
                   task={{ ...task, index: index + 1 }}
                   openModal={openModal}
                   handleDelete={handleDelete}
+                  handleDetailsModal={handleDetailsModal}
                 />
               ))}
             </tbody>
@@ -281,6 +310,7 @@ const Ongoing = () => {
           </div>
         </div>
       </dialog>
+      <DetailsTask isOpen={isOpen} setIsOpen={setIsOpen} task={selectedTask} />
     </div>
   );
 };
