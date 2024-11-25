@@ -215,7 +215,7 @@ const TodoList = () => {
         Pending
       </h1>
 
-      <div ref={drop} className="overflow-x-auto h-[calc(100vh-380px)]">
+      <div ref={drop} className="overflow-x-auto h-[calc(100vh-50vh)]">
         {tasks?.length > 0 ? (
           <table className="table text-center">
             {/* head */}
