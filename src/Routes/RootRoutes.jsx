@@ -6,7 +6,7 @@ const RootRoutes = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-[calc(100vh-156px)] px-20">
+      <div className="min-h-[calc(100vh-156px)] px-20 ">
         <Outlet />
       </div>
       <div className="px-20">

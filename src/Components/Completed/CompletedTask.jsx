@@ -137,29 +137,44 @@ const CompletedTask = () => {
 
   const [, drop] = useDrop({
     accept: "TASK",
-    drop: (item, monitor) => {
+    drop: (item) => {
       // Handle the drop action based on the monitor.getItem() data
       // For example, you can move the task to the "To-Do" list:
-      console.log("Task dropped to To-Do:", item, monitor);
       const res = axiosPublic.put(`/todoToCompleted/${item.id}`, {
         ...item,
         user: user.email,
       });
 
       res
-        .then((res) => {
+        .then(() => {
           swal("Success!", "Task successfully updated", "success");
-          console.log(res.data);
           ongoingRefetch();
           allTaskRefetch();
           completedRefetch();
         })
         .catch((err) => {
           swal("Error!", `${err.message}`, "error");
-          console.log(err);
         });
     },
   });
+
+  const handleToArchived = async (id) => {
+    const res = axiosPublic.put(`/toArchived/${id}`, {
+      user: user.email,
+    });
+
+    res
+      .then(() => {
+        swal("Success!", "Task successfully updated", "success");
+        completedRefetch();
+        allTaskRefetch();
+        ongoingRefetch();
+        setIsOpen(false);
+      })
+      .catch((err) => {
+        swal("Error!", `${err.message}`, "error");
+      });
+  };
 
   const onSubmit = (data) => {
     if (modalRef.current) {
@@ -173,33 +188,28 @@ const CompletedTask = () => {
     });
 
     res
-      .then((res) => {
+      .then(() => {
         swal("Success!", "Task successfully updated", "success");
-        console.log(res.data);
         completedRefetch();
         allTaskRefetch();
         ongoingRefetch();
       })
       .catch((err) => {
         swal("Error!", `${err.message}`, "error");
-        console.log(err);
       });
   };
 
   const handleDelete = (taskId) => {
     axiosPublic
       .delete(`/deleteTask/${taskId}`)
-      .then((res) => {
+      .then(() => {
         swal("success", `Successfully Deleted`, "success");
-        console.log(res);
         completedRefetch();
         allTaskRefetch();
         ongoingRefetch();
       })
       .catch((err) => {
         swal("Error", `${err.message}`, "error");
-
-        console.log(err.message);
       });
   };
 
@@ -310,7 +320,13 @@ const CompletedTask = () => {
           </div>
         </div>
       </dialog>
-      <DetailsTask isOpen={isOpen} setIsOpen={setIsOpen} task={selectedTask} />
+      <DetailsTask
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        task={selectedTask}
+        handleFunc={handleToArchived}
+        funcBtnValue={"Move to Archive"}
+      />
     </div>
   );
 };

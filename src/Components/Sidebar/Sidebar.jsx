@@ -30,6 +30,9 @@ const Sidebar = () => {
           <li>
             <NavLink to="/dashboard/taskManagement">Task Management</NavLink>
           </li>
+          <li>
+            <NavLink to="/dashboard/archivedTodo">Archived</NavLink>
+          </li>
         </ul>
       </div>
     </div>

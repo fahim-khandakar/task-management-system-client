@@ -25,16 +25,14 @@ const CreateTask = () => {
   }, [setValue]);
 
   const onSubmit = (data) => {
-    console.log("Submitted:", { ...data, user: user.email });
     if (modalRef.current) {
       modalRef.current.close();
     }
 
     const res = axiosPublic.post("/addTask", { ...data, user: user.email });
     res
-      .then((res) => {
+      .then(() => {
         swal("Success!", "You Are Successfully Added this task", "success");
-        console.log(res.data);
         allTaskRefetch();
         ongoingRefetch();
         setValue("title", "");
@@ -45,7 +43,6 @@ const CreateTask = () => {
       })
       .catch((err) => {
         swal("Error!", `${err.message}`, "error");
-        console.log(err);
       });
   };
 

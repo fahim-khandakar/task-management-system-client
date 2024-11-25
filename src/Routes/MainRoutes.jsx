@@ -7,6 +7,7 @@ import Dashboard from "../Pages/Dashboard/Dashboard";
 import DashboardProfile from "../Pages/DashboardProfile/DashboardProfile";
 import PrivateRoute from "./PrivateRoutes";
 import TaskManagement from "../Pages/TaskManagement/TaskManagement";
+import TodoArchived from "../Components/Todo Archived/TodoArchived";
 
 const MainRoutes = createBrowserRouter([
   {
@@ -46,6 +47,14 @@ const MainRoutes = createBrowserRouter([
             element: (
               <PrivateRoute>
                 <TaskManagement></TaskManagement>
+              </PrivateRoute>
+            ),
+          },
+          {
+            path: "/dashboard/archivedTodo",
+            element: (
+              <PrivateRoute>
+                <TodoArchived />
               </PrivateRoute>
             ),
           },

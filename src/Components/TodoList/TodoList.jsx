@@ -99,32 +99,28 @@ const TodoList = () => {
 
   const { user } = useContext(AuthContext);
   const axiosPublic = userAxiosPublic();
-
   const [selectedTask, setSelectedTask] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 
   const [, drop] = useDrop({
     accept: "TASK",
-    drop: (item, monitor) => {
+    drop: (item) => {
       // Handle the drop action based on the monitor.getItem() data
       // For example, you can move the task to the "To-Do" list:
-      console.log("Task dropped to To-Do:", item, monitor);
       const res = axiosPublic.put(`/toTodo/${item.id}`, {
         ...item,
         user: user.email,
       });
 
       res
-        .then((res) => {
+        .then(() => {
           swal("Success!", "Task successfully updated", "success");
-          console.log(res.data);
           ongoingRefetch();
           allTaskRefetch();
           completedRefetch();
         })
         .catch((err) => {
           swal("Error!", `${err.message}`, "error");
-          console.log(err);
         });
     },
   });
@@ -180,32 +176,28 @@ const TodoList = () => {
     });
 
     res
-      .then((res) => {
+      .then(() => {
         swal("Success!", "Task successfully updated", "success");
-        console.log(res.data);
         allTaskRefetch();
         ongoingRefetch();
         completedRefetch();
       })
       .catch((err) => {
         swal("Error!", `${err.message}`, "error");
-        console.log(err);
       });
   };
 
   const handleDelete = (taskId) => {
     axiosPublic
       .delete(`/deleteTask/${taskId}`)
-      .then((res) => {
+      .then(() => {
         swal("success", `Successfully Deleted`, "success");
-        console.log(res);
         allTaskRefetch();
         ongoingRefetch();
         completedRefetch();
       })
       .catch((err) => {
         swal("Error", `${err.message}`, "error");
-        console.log(err.message);
       });
   };
 
